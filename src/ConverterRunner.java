@@ -33,25 +33,30 @@ class ConverterRunner {
 
         NumberConverter nc = new NumberConverter(number, base);
         int[] digits = nc.getDigits();
-        System.out.println("\n\nDigit array: " + Arrays.toString(digits));
-        System.out.println("Number: " + nc.displayOriginalNumber());
 
         if (base == 2)
         {
-            System.out.println("Hexadecimal Number: " + nc.arrayToString(nc.convertToOther(16)));
+            System.out.println("\n\nHexadecimal Number: " + nc.arrayToString(nc.convertToOther(16)));
             System.out.println("Decimal Number: " + nc.arrayToString(nc.convertToDecimal()));
             System.out.println("Octal Number: " + nc.arrayToString(nc.convertToOther(8)));
         }
         if (base == 8)
         {
-            System.out.println("Hexadecimal Number: " + nc.arrayToString(nc.convertToOther(16)));
+            System.out.println("\n\nHexadecimal Number: " + nc.arrayToString(nc.convertToOther(16)));
             System.out.println("Decimal Number: " + nc.arrayToString(nc.convertToDecimal()));
             System.out.println("Binary Number: " + nc.arrayToString(nc.convertToOther(2)));
         }
 
         if (base == 10)
         {
-            System.out.println("Hexadecimal Number: " + nc.arrayToString(nc.convertToOther(16)));
+            System.out.println("\n\nHexadecimal Number: " + nc.arrayToString(nc.convertToOther(16)));
+            System.out.println("Octal Number: " + nc.arrayToString(nc.convertToOther(8)));
+            System.out.println("Binary Number: " + nc.arrayToString(nc.convertToOther(2)));
+        }
+
+        if (base == 16)
+        {
+            System.out.println("\n\nDecimal Number: " + nc.arrayToString(nc.convertToDecimal()));
             System.out.println("Octal Number: " + nc.arrayToString(nc.convertToOther(8)));
             System.out.println("Binary Number: " + nc.arrayToString(nc.convertToOther(2)));
         }
