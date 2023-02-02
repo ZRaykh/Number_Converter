@@ -1,15 +1,14 @@
 public class NumberConverter {
-    int[] digits;
-    int base;
-    int tensNumber;
+    private int[] digits;
+    private int base;
+    private int tensNumber;
+    private String values = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
 
-    public NumberConverter(int number, int base) {
-        String numberAsString = Integer.toString(number);
-        digits = new int[numberAsString.length()];
-        for (int i = 0; i < numberAsString.length(); i++) {
-            String single = numberAsString.substring(i,i+1);
-            int d = Integer.parseInt(single);
-            digits[i] = d;
+
+    public NumberConverter(String number, int base) {
+        digits = new int[number.length()];
+        for (int i = 0; i < number.length(); i++) {
+            digits[i] = values.indexOf((number.charAt(i)));
         }
         this.base = base;
     }
@@ -23,12 +22,11 @@ public class NumberConverter {
         return o;
     }
 
-    public String ArrayToString(int[] array) {
+    public String arrayToString(int[] array) {
         String o = "";
         for (int i = 0; i < array.length; i++) {
-            o = o + array[i];
+            o += values.charAt(array[i]);
         }
-        o = o + "\n";
         return o;
     }
 
@@ -37,38 +35,70 @@ public class NumberConverter {
     }
 
     public int[] convertToDecimal() {
+        int[] digitsNum;
         int num = 0;
+        int power = 0;
+        int scale = 0;
         for (int i = digits.length - 1; i >= 0; i--)
         {
-            num += digits[i] * (int) Math.pow(base, digits.length - (i +1));
+            num += digits[i] * Math.pow(base, scale);
+            scale++;
         }
-        tensNumber = num;
-        return makeArray("" + num);
+        scale = 0;
+        while (Math.pow(10, power) <= num)
+        {
+            power++;
+        }
+        digitsNum = new int[power];
+        power--;
+        for (int i = 0; i < digitsNum.length; i++)
+        {
+            digitsNum[i] = (int) (num / Math.pow(10, power));
+            num -= digitsNum[i] * Math.pow(10, power);
+            power--;
+        }
+        return digitsNum;
     }
 
-    public int[] convertToBinary()
+    public int[] convertToOther(int newBase)
     {
-        int tens[] = convertToDecimal();
-        int tensAsNum = tensNumber;
-        String num = "";
-        while (tensAsNum != 0)
+        int num;
+        int power = 0;
+        int converted[];
+        if (base != newBase)
         {
-            num = tensAsNum % 2 + num;
-            tensAsNum /= 2;
+            if (base == 10)
+            {
+                num = Integer.parseInt(arrayToString(digits));
+            }
+            else
+            {
+                num = Integer.parseInt(arrayToString(convertToDecimal()));
+            }
+            if (newBase == 1)
+            {
+                converted = new int[num];
+                for (int i = 0; i < num; i++)
+                {
+                    converted[i] = 1;
+                }
+                return converted;
+            }
+            while (Math.pow(newBase, power) <= num)
+            {
+                power++;
+            }
+            converted = new int[power];
+            power--;
+            for (int i = 0; i < converted.length; i++)
+            {
+                converted[i] = num / (int) (Math.pow(newBase, power));
+                num %= (int) (Math.pow(newBase, power));
+                power --;
+            }
+            return converted;
         }
-        return makeArray(num);
-    }
-
-    public int[] convertToOctal() {
-        int tens[] = convertToDecimal();
-        int tensAsNum = tensNumber;
-        String num = "";
-        while (tensAsNum != 0)
-        {
-            num = tensAsNum % 8 + num;
-            tensAsNum /= 8;
-        }
-        return makeArray(num);
+        return null;
     }
 
     private int[] makeArray(String numberString)
