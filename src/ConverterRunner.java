@@ -68,6 +68,11 @@ class ConverterRunner {
         {
             System.out.println("Enter a base 10 number:");
             int baseTenNum = s.nextInt();
+            while (baseTenNum < 0)
+            {
+                System.out.println("Enter a POSITIVE number:");
+                baseTenNum = s.nextInt();
+            }
 
             System.out.println("Enter a new base:");
             int newBase = s.nextInt();
